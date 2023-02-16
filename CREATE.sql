@@ -1,0 +1,47 @@
+CREATE TABLE IF NOT EXISTS MusicGenre (
+	genre_id SERIAL PRIMARY KEY,
+	name VARCHAR(150) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Artist (
+	artist_id SERIAL PRIMARY KEY,
+	name VARCHAR(150) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ArtistGenre (
+	id SERIAL PRIMARY KEY,
+	artist_id INTEGER NOT NULL REFERENCES Artist(artist_id),
+	genre_id INTEGER NOT NULL REFERENCES MusicGenre(genre_id)
+);
+
+CREATE TABLE IF NOT EXISTS Albums (
+	album_id SERIAL PRIMARY KEY,
+	name VARCHAR(150) NOT NULL,
+	release_date DATE NOT NULL CHECK (release_date > '01-01-1990')
+);
+
+CREATE TABLE IF NOT EXISTS AlbumsArtists (
+	id SERIAL PRIMARY KEY,
+	album_id INTEGER NOT NULL REFERENCES Albums(album_id),
+	artist_id INTEGER NOT NULL REFERENCES Artist(artist_id)
+);
+
+CREATE TABLE IF NOT EXISTS Tracks (
+	tracks_id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	lenght INTEGER NOT NULL CHECK (lenght < 20),
+	album_id INTEGER NOT NULL REFERENCES Albums(album_id)
+);
+
+CREATE TABLE IF NOT EXISTS MixTapes (
+	mix_tapes_id SERIAL PRIMARY KEY,
+	name VARCHAR(100) UNIQUE NOT NULL,
+	release_date DATE NOT NULL CHECK (release_date > '01-01-1990')
+);
+
+CREATE TABLE IF NOT EXISTS MixTapesTracks (
+	id SERIAL PRIMARY KEY,
+	tracks_id INTEGER NOT NULL REFERENCES Tracks(tracks_id),
+	mix_tapes_id INTEGER NOT NULL REFERENCES MixTapes(mix_tapes_id)
+);
+	
